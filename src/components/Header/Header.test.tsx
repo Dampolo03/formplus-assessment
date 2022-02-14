@@ -72,6 +72,7 @@ describe("renders <Header/>", () => {
       HeaderComponent.container.querySelector("#Category");
     fireEvent.change(selectCategory, { target: { value: "All" } });
     expect(setSearchWords).toHaveBeenCalled();
+    expect(setResults).toHaveBeenCalled();
     expect(setTemplate).toHaveBeenCalledWith("All");
     expect(setObtainedData).toHaveBeenCalledWith(unchangedData);
 
