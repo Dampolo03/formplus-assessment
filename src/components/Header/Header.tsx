@@ -37,10 +37,11 @@ export const Header = () => {
       setDate("default");
       setOrder("default");
       setSearchWords("");
+      setResults([]);
       setCategory(e.target.value);
       if (e.target.value === "All") {
         setTemplate("All");
-        setObtainedData(unchangedData);
+        setObtainedData([...unchangedData]);
       } else {
         setTemplate(e.target.value);
         const categoryArray = [];
@@ -53,7 +54,7 @@ export const Header = () => {
         setSavedData(categoryArray);
       }
     },
-    [setObtainedData, unchangedData, setTemplate, setSearchWords]
+    [setObtainedData, unchangedData, setTemplate, setSearchWords, setResults]
   );
 
   const handleOrderChange = useCallback(
