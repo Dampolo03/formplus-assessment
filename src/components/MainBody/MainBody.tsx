@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { UserContext } from "../../context/UserContext";
 import { Pagination } from "../Pagination/Pagination";
 import { PlaceholderCards } from "../PlaceholderCards/PlaceholderCards";
@@ -8,8 +8,17 @@ export const MainBody = () => {
   const { obtainedData, error, loading, template, searchWords, results } =
     useContext(UserContext);
 
+  const [templateCount, setTemplateCount] = useState<number | string>(0);
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [templatesPerPage] = useState<number>(15);
+
+  useEffect(() => {
+    if (results.length) {
+      setTemplateCount(results.length);
+    } else {
+      setTemplateCount(obtainedData.length);
+    }
+  }, [obtainedData, results]);
 
   const indexOfLastTemplate = currentPage * templatesPerPage;
   const indexOfFirstTemplate = indexOfLastTemplate - templatesPerPage;
@@ -33,11 +42,7 @@ export const MainBody = () => {
       <div className="main-body-headers">
         <h5>{template ? `${template} templates` : "Loading templates..."}</h5>
         <h5>
-          {!obtainedData.length && !results.length
-            ? "No template"
-            : obtainedData.length && !results.length
-            ? `${obtainedData.length} templates`
-            : `${results.length} templates`}
+          {templateCount === 0 ? "No template" : `${templateCount} templates`}
         </h5>
       </div>
       <div>
