@@ -15,6 +15,8 @@ export const MainBody = () => {
   useEffect(() => {
     if (results.length) {
       setTemplateCount(results.length);
+    } else if (!results.length && searchWords) {
+      setTemplateCount(0);
     } else {
       setTemplateCount(obtainedData.length);
     }
