@@ -20,7 +20,7 @@ export const MainBody = () => {
     } else {
       setTemplateCount(obtainedData.length);
     }
-  }, [obtainedData, results]);
+  }, [obtainedData, results, searchWords]);
 
   const indexOfLastTemplate = currentPage * templatesPerPage;
   const indexOfFirstTemplate = indexOfLastTemplate - templatesPerPage;
