@@ -1,16 +1,25 @@
-import React, { useContext, useEffect, useState } from "react";
-import { UserContext } from "../../context/UserContext";
+import React, { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
+import { RootState } from "../../redux/configureStore";
 import { Pagination } from "../Pagination/Pagination";
 import { PlaceholderCards } from "../PlaceholderCards/PlaceholderCards";
 import { TemplateCard } from "../TemplateCard/TemplateCard";
 
 export const MainBody = () => {
-  const { obtainedData, error, loading, template, searchWords, results } =
-    useContext(UserContext);
-
   const [templateCount, setTemplateCount] = useState<number | string>(0);
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [templatesPerPage] = useState<number>(15);
+
+  const error = useSelector((state: RootState) => state.error.value);
+  const loading = useSelector((state: RootState) => state.loading.value);
+  const template = useSelector((state: RootState) => state.template.value);
+  const results = useSelector((state: RootState) => state.results.value);
+  const searchWords = useSelector(
+    (state: RootState) => state.searchWords.value
+  );
+  const obtainedData = useSelector(
+    (state: RootState) => state.obtainedData.value
+  );
 
   useEffect(() => {
     if (results.length) {

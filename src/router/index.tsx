@@ -1,21 +1,20 @@
-import React, { useEffect, useState } from "react";
-import { UserContext } from "../context/UserContext";
+import React, { useEffect } from "react";
+import { useDispatch } from "react-redux";
 import { HomePage } from "../pages/HomePage";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
+import { setLoadingFalse, setLoadingTrue } from "../redux/loadingSlice";
+import { setError } from "../redux/errorSlice";
+import { setObtainedData } from "../redux/obtainedDataSlice";
+import { setUnchangedData } from "../redux/unchangedDataSlice";
+import { setTemplate } from "../redux/templateSlice";
 import paths from "./paths";
 
 export const RouterComponent = () => {
-  const [loading, setLoading] = useState<boolean>(false);
-  const [obtainedData, setObtainedData] = useState<Array<any>>([]);
-  const [unchangedData, setUnchangedData] = useState<Array<any>>([]);
-  const [error, setError] = useState<string>("");
-  const [template, setTemplate] = useState<string>("");
-  const [searchWords, setSearchWords] = useState<string>("");
-  const [results, setResults] = useState<Array<any>>([]);
+  const dispatch = useDispatch();
 
   useEffect(() => {
-    setLoading(true);
     const fetchAPI = () => {
+      dispatch(setLoadingTrue());
       fetch(`${process.env.REACT_APP_API}`)
         .then((response) => {
           return response.json();
@@ -23,42 +22,26 @@ export const RouterComponent = () => {
         .then((data) => {
           const newData = [...data];
           const slicedData = [...newData.slice(0, 2000)];
-          setObtainedData([...slicedData]);
-          setUnchangedData([...slicedData]);
-          setTemplate("All");
-          setLoading(false);
+          dispatch(setObtainedData({ newData: [...slicedData] }));
+          dispatch(setUnchangedData({ newData: [...slicedData] }));
+          dispatch(setTemplate({ template: "All" }));
+          dispatch(setLoadingFalse());
         })
-        .catch(() => {
-          setError("Something went wrong...");
-          setLoading(false);
+        .catch((error) => {
+          dispatch(setError());
+          dispatch(setLoadingFalse());
         });
     };
 
     fetchAPI();
-  }, []);
+  }, [dispatch]);
 
   return (
     <Router>
-      <UserContext.Provider
-        value={{
-          obtainedData,
-          unchangedData,
-          loading,
-          error,
-          template,
-          searchWords,
-          results,
-          setObtainedData,
-          setTemplate,
-          setSearchWords,
-          setResults,
-        }}
-      >
-        <Switch>
-          <Route exact path={paths.root} component={HomePage} />
-          <Route exact path={paths.noPage} component={HomePage} />
-        </Switch>
-      </UserContext.Provider>
+      <Switch>
+        <Route exact path={paths.root} component={HomePage} />
+        <Route exact path={paths.noPage} component={HomePage} />
+      </Switch>
     </Router>
   );
 };
