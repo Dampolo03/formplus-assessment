@@ -18,10 +18,8 @@ export const MainBody = () => {
   const obtainedData = useSelector(
     (state: RootState) => state.all.obtainedData
   );
-  const states = useSelector((state) => state);
 
   useEffect(() => {
-    console.log("states", states);
     if (results.length) {
       setTemplateCount(results.length);
     } else if (!results.length && searchWords) {
@@ -29,7 +27,7 @@ export const MainBody = () => {
     } else {
       setTemplateCount(obtainedData.length);
     }
-  }, [obtainedData, results, searchWords, states]);
+  }, [obtainedData, results, searchWords]);
 
   const indexOfLastTemplate = currentPage * templatesPerPage;
   const indexOfFirstTemplate = indexOfLastTemplate - templatesPerPage;

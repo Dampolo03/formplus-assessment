@@ -1,4 +1,6 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+
+const errorMessage = "Something went wrong...";
 
 interface State {
   error: string;
@@ -20,12 +22,27 @@ const initialState: State = {
   unchangedData: [],
 };
 
+export const fetchData = createAsyncThunk(
+  "fetchData",
+  async (thunkAPI: any) => {
+    try {
+      const response = await fetch(`${process.env.REACT_APP_API}`);
+      const obtainedData = await response.json();
+      const newData = [...obtainedData];
+      const slicedData = [...newData.slice(0, 2000)];
+      return slicedData;
+    } catch {
+      return thunkAPI.rejectWithValue("");
+    }
+  }
+);
+
 const allSlices = createSlice({
   name: "allSlices",
   initialState,
   reducers: {
     setError: (state) => {
-      state.error = "Something went wrong...";
+      state.error = errorMessage;
     },
     setLoadingTrue: (state) => {
       state.loading = true;
@@ -53,6 +70,21 @@ const allSlices = createSlice({
       const newData = action.payload;
       state.unchangedData = newData.newData;
     },
+  },
+  extraReducers: (getData) => {
+    getData.addCase(fetchData.pending, (state) => {
+      state.loading = true;
+    });
+    getData.addCase(fetchData.fulfilled, (state, { payload }: any) => {
+      state.obtainedData = [...payload];
+      state.unchangedData = [...payload];
+      state.template = "All";
+      state.loading = false;
+    });
+    getData.addCase(fetchData.rejected, (state) => {
+      state.error = errorMessage;
+      state.loading = false;
+    });
   },
 });
 
