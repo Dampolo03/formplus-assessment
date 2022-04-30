@@ -10,18 +10,18 @@ export const MainBody = () => {
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [templatesPerPage] = useState<number>(15);
 
-  const error = useSelector((state: RootState) => state.error.value);
-  const loading = useSelector((state: RootState) => state.loading.value);
-  const template = useSelector((state: RootState) => state.template.value);
-  const results = useSelector((state: RootState) => state.results.value);
-  const searchWords = useSelector(
-    (state: RootState) => state.searchWords.value
-  );
+  const error = useSelector((state: RootState) => state.all.error);
+  const loading = useSelector((state: RootState) => state.all.loading);
+  const template = useSelector((state: RootState) => state.all.template);
+  const results = useSelector((state: RootState) => state.all.results);
+  const searchWords = useSelector((state: RootState) => state.all.searchWords);
   const obtainedData = useSelector(
-    (state: RootState) => state.obtainedData.value
+    (state: RootState) => state.all.obtainedData
   );
+  const states = useSelector((state) => state);
 
   useEffect(() => {
+    console.log("states", states);
     if (results.length) {
       setTemplateCount(results.length);
     } else if (!results.length && searchWords) {
@@ -29,7 +29,7 @@ export const MainBody = () => {
     } else {
       setTemplateCount(obtainedData.length);
     }
-  }, [obtainedData, results, searchWords]);
+  }, [obtainedData, results, searchWords, states]);
 
   const indexOfLastTemplate = currentPage * templatesPerPage;
   const indexOfFirstTemplate = indexOfLastTemplate - templatesPerPage;

@@ -2,11 +2,14 @@ import React, { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { HomePage } from "../pages/HomePage";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
-import { setLoadingFalse, setLoadingTrue } from "../redux/loadingSlice";
-import { setError } from "../redux/errorSlice";
-import { setObtainedData } from "../redux/obtainedDataSlice";
-import { setUnchangedData } from "../redux/unchangedDataSlice";
-import { setTemplate } from "../redux/templateSlice";
+import {
+  setError,
+  setLoadingFalse,
+  setLoadingTrue,
+  setObtainedData,
+  setUnchangedData,
+  setTemplate,
+} from "../redux/allSlices";
 import paths from "./paths";
 
 export const RouterComponent = () => {

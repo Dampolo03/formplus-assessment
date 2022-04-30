@@ -1,11 +1,5 @@
 import { configureStore } from "@reduxjs/toolkit";
-import loadingSlice from "./loadingSlice";
-import errorSlice from "./errorSlice";
-import obtainedDataSlice from "./obtainedDataSlice";
-import unchangedDataSlice from "./unchangedDataSlice";
-import templateSlice from "./templateSlice";
-import searchWordsSlice from "./searchWordsSlice";
-import resultsSlice from "./resultsSlice";
+import { reducer } from "./allSlices";
 
 // const actionSanitizer = (action: any) =>
 //   action.type === "FILE_DOWNLOAD_SUCCESS" && action.data
@@ -14,13 +8,7 @@ import resultsSlice from "./resultsSlice";
 
 const store = configureStore({
   reducer: {
-    loading: loadingSlice,
-    error: errorSlice,
-    obtainedData: obtainedDataSlice,
-    unchangedData: unchangedDataSlice,
-    template: templateSlice,
-    searchWords: searchWordsSlice,
-    results: resultsSlice,
+    all: reducer,
   },
   middleware: (getDefaultMiddleware) => [
     ...getDefaultMiddleware({

@@ -5,10 +5,12 @@ import { Searchbar } from "../Searchbar/Searchbar";
 import { useSelector } from "react-redux";
 import { RootState } from "../../redux/configureStore";
 import { useDispatch } from "react-redux";
-import { setObtainedData } from "../../redux/obtainedDataSlice";
-import { setTemplate } from "../../redux/templateSlice";
-import { setSearchWords } from "../../redux/searchWordsSlice";
-import { setResults } from "../../redux/resultsSlice";
+import {
+  setObtainedData,
+  setTemplate,
+  setSearchWords,
+  setResults,
+} from "../../redux/allSlices";
 
 export const Header = () => {
   const [savedData, setSavedData] = useState<Array<any>>([]);
@@ -17,14 +19,12 @@ export const Header = () => {
   const [date, setDate] = useState<string>("default");
 
   const obtainedData = useSelector(
-    (state: RootState) => state.obtainedData.value
+    (state: RootState) => state.all.obtainedData
   );
   const unchangedData = useSelector(
-    (state: RootState) => state.unchangedData.value
+    (state: RootState) => state.all.unchangedData
   );
-  const searchWords = useSelector(
-    (state: RootState) => state.searchWords.value
-  );
+  const searchWords = useSelector((state: RootState) => state.all.searchWords);
 
   const dispatch = useDispatch();
 
